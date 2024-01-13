@@ -1,6 +1,6 @@
 <header>
-	<div>
-		<h1>Checkerd</h1>
+	<div class="title">
+		<h1>Checkered</h1>
 		<p>チェック柄画像生成</p>
 	</div>
 
@@ -74,8 +74,11 @@
 		</dd>
 		<dt>画像サイズ</dt>
 		<dd>
-			<p>生成したい画像のサイズを指定します。書式は<code>[整数]x[整数]</code>です。</p>
-			<p>例：<code>640x480</code></p>
+			<p>
+				生成したい画像のサイズ＋拡張子を指定します。書式は<code>[整数]x[整数].svg</code
+				>です。拡張子は<code>.svg</code>のみに対応しています。
+			</p>
+			<p>例：<code>640x480.svg</code></p>
 		</dd>
 	</dl>
 
@@ -109,3 +112,59 @@
 		<a href="/40x40/fcfcfc/ef000080h20-20_ef000080v20-20/800x600.svg">800x600</a>
 	</div>
 </section>
+
+<style>
+	:global(*) {
+		margin: 0;
+		padding: 0;
+	}
+
+	* {
+		color: #333;
+		line-height: 1.7rem;
+	}
+
+	h1,
+	h2,
+	h3 {
+		margin-top: 1rem;
+	}
+
+	header {
+		margin: 1rem;
+	}
+
+	section {
+		margin: 0 1rem;
+	}
+
+	dl {
+		margin-left: 2rem;
+	}
+
+	dt {
+		margin-top: 1rem;
+	}
+
+	dd {
+		margin-left: 1.5rem;
+	}
+
+	code {
+		background-color: #ebebeb;
+		border-radius: 0.25rem;
+		margin: 0 0.25rem;
+		padding: 0.25rem 0.5rem;
+	}
+
+	.title {
+		display: flex;
+		flex-direction: row;
+		gap: 0.5rem;
+		align-items: baseline;
+		background-image: url(https://checkered.pages.dev/128x128/003069/0054b666h64-32_0054b666v64-32_fff6v16-32_fff6h16-32_fad93f80v8-88_fad93f80v8-104_fad93f80h8-88_fad93f80h8-104/128x128.svg);
+		background-repeat: no-repeat;
+		background-size: contain;
+		padding-left: 4rem;
+	}
+</style>
