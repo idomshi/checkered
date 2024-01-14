@@ -8,6 +8,11 @@
 		offset: number;
 	}
 
+	const directionOption = [
+		{ value: 'h', text: 'ヨコ' },
+		{ value: 'v', text: 'タテ' }
+	];
+
 	let tw = 128;
 	let th = 128;
 	let iw = 640;
@@ -53,7 +58,13 @@
 			<h3>線</h3>
 			{#each lineItems as lineItem, i}
 				<div class="lineitem">
-					<p>線の向き：<input type="text" bind:value={lineItem.direction} /></p>
+					<p>
+						線の向き：<select bind:value={lineItem.direction}>
+							{#each directionOption as diropt, i}
+								<option value={diropt.value} selected={i === 0}>{diropt.text}</option>
+							{/each}
+						</select>
+					</p>
 					<p>色：<input type="text" bind:value={lineItem.color} /></p>
 					<p>太さ：<input type="text" bind:value={lineItem.linewidth} /></p>
 					<p>位置：<input type="text" bind:value={lineItem.offset} /></p>
