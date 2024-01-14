@@ -65,9 +65,13 @@
 							{/each}
 						</select>
 					</p>
-					<p>色：<input type="text" bind:value={lineItem.color} /></p>
-					<p>太さ：<input type="text" bind:value={lineItem.linewidth} /></p>
-					<p>位置：<input type="text" bind:value={lineItem.offset} /></p>
+					<div>
+						色：
+						<div class="colorpreview" style="background-color: #{lineItem.color}"></div>
+						<input type="text" bind:value={lineItem.color} />
+					</div>
+					<p>太さ：<input type="number" bind:value={lineItem.linewidth} /></p>
+					<p>位置：<input type="number" bind:value={lineItem.offset} /></p>
 					<button type="button" on:click={() => removeItem(i)}>削除</button>
 				</div>
 			{/each}
@@ -121,6 +125,11 @@
 			height: 2.5rem;
 			border-radius: 0.25rem;
 		}
+	}
+
+	.colorpreview {
+		width: 2rem;
+		height: 2rem;
 	}
 
 	.result {
