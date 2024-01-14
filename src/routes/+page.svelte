@@ -1,37 +1,5 @@
 <script lang="ts">
-	import { svggen } from '$lib/svggen';
-
-	interface LineItem {
-		direction: 'h' | 'v';
-		color: string;
-		linewidth: number;
-		offset: number;
-	}
-
-	let tw = 128;
-	let th = 128;
-	let iw = 640;
-	let ih = 480;
-	let bgcolor = 'ffffff';
-	let lineItems: LineItem[] = [];
-
-	$: tilesize = `${tw}x${th}`;
-	$: lines = lineItems
-		.map(({ direction, color, linewidth, offset }) => `${color}${direction}${linewidth}-${offset}`)
-		.join('_');
-	$: imagesize = `${iw}x${ih}.svg`;
-	$: svg = svggen({ tilesize, bgcolor, lines, imagesize });
-	$: relativeUrl = `${tilesize}/${bgcolor}/${lines}/${imagesize}`;
-	$: url = `https://checkered.pages.dev/${relativeUrl}`;
-
-	function addLine() {
-		lineItems = [...lineItems, { direction: 'h', color: 'ccccccff', linewidth: 8, offset: 4 }];
-	}
-
-	function removeItem(i: number) {
-		lineItems.splice(i, 1);
-		lineItems = lineItems;
-	}
+	import Generator from '$lib/Generator.svelte';
 </script>
 
 <header>
@@ -44,42 +12,7 @@
 	<p>URLをパラメータにしてSVG形式の画像を自由に作り出すことができます。</p>
 </header>
 
-<section class="form">
-	<!-- <img alt="preview" src={svg}> -->
-	{@html svg}
-	<form>
-		<label for="tw">タイル幅</label>
-		<input id="tw" type="text" bind:value={tw} />
-		<label for="tw">タイル高さ</label>
-		<input id="tw" type="text" bind:value={th} />
-		<label for="tw">画像幅</label>
-		<input id="tw" type="text" bind:value={iw} />
-		<label for="tw">画像高さ</label>
-		<input id="tw" type="text" bind:value={ih} />
-
-		<label for="tw">背景色</label>
-		<input id="tw" type="text" bind:value={bgcolor} />
-
-		<div class="lines">
-			<h3>線</h3>
-			{#each lineItems as lineItem, i}
-				<div class="lineitem">
-					<p>線の向き：<input type="text" bind:value={lineItem.direction} /></p>
-					<p>色：<input type="text" bind:value={lineItem.color} /></p>
-					<p>太さ：<input type="text" bind:value={lineItem.linewidth} /></p>
-					<p>位置：<input type="text" bind:value={lineItem.offset} /></p>
-					<button type="button" on:click={() => removeItem(i)}>削除</button>
-				</div>
-			{/each}
-			<button type="button" on:click={addLine}>追加</button>
-		</div>
-
-		<div class="result">
-			<p>URL: <input type="text" bind:value={url} /></p>
-			<a href={relativeUrl}>開く</a>
-		</div>
-	</form>
-</section>
+<Generator />
 
 <section>
 	<h2>URLの書式</h2>
@@ -190,9 +123,6 @@
 	:global(*) {
 		margin: 0;
 		padding: 0;
-	}
-
-	* {
 		color: #333;
 		line-height: 1.7rem;
 	}
@@ -209,44 +139,6 @@
 
 	section {
 		margin: 0 1rem;
-	}
-
-	form {
-		display: grid;
-		gap: 0.5rem 2rem;
-		grid-template-columns: 8rem 2fr;
-	}
-
-	.form {
-		border: #666 solid 1px;
-		padding: 0.5rem;
-	}
-
-	.lines {
-		grid-column-start: 1;
-		grid-column-end: 3;
-	}
-
-	.lineitem {
-		display: grid;
-		gap: 1rem;
-		grid-template-columns: 1fr 1fr 1fr 1fr 4rem;
-		align-items: end;
-
-		& input {
-			width: 100%;
-		}
-
-		& button {
-			padding: 0.25rem;
-			height: 2.5rem;
-			border-radius: 0.25rem;
-		}
-	}
-
-	.result {
-		grid-column-start: 1;
-		grid-column-end: 3;
 	}
 
 	dl {
