@@ -14,9 +14,9 @@
 	<p>URLをパラメータにしてSVG形式の画像を自由に作り出すことができます。</p>
 </header>
 
+<Gallery />
 <Generator />
 <Spec />
-<Gallery />
 
 <style>
 	:global(*) {
