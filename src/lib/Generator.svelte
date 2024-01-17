@@ -1,81 +1,59 @@
 <script lang="ts">
 	import { svggen } from '$lib/svggen';
+	import LineItemView from './LineItemView.svelte';
 
-	interface LineItem {
-		direction: 'h' | 'v';
-		color: string;
-		linewidth: number;
-		offset: number;
-	}
+	import { writable, type Writable } from 'svelte/store';
+	import { getContext } from 'svelte';
+	import type { LineItem } from './types';
 
-	const directionOption = [
-		{ value: 'h', text: 'ヨコ' },
-		{ value: 'v', text: 'タテ' }
-	];
+	let tw = writable(128);
+	let th = writable(128);
+	let iw = writable(640);
+	let ih = writable(480);
+	let bgcolor = writable('ffffff');
 
-	let tw = 128;
-	let th = 128;
-	let iw = 640;
-	let ih = 480;
-	let bgcolor = 'ffffff';
-	let lineItems: LineItem[] = [];
+	const {
+		value: lineItems,
+		addItem,
+		removeItem
+	} = getContext<{
+		value: Writable<LineItem[]>;
+		addItem: () => void;
+		removeItem: (idx: number) => void;
+	}>('lineItems');
 
-	$: tilesize = `${tw}x${th}`;
-	$: lines = lineItems
+	$: tilesize = `${$tw}x${$th}`;
+	$: lines = $lineItems
 		.map(({ direction, color, linewidth, offset }) => `${color}${direction}${linewidth}-${offset}`)
 		.join('_');
-	$: imagesize = `${iw}x${ih}.svg`;
-	$: svg = svggen({ tilesize, bgcolor, lines, imagesize });
-	$: relativeUrl = `${tilesize}/${bgcolor}/${lines}/${imagesize}`;
+	$: imagesize = `${$iw}x${$ih}.svg`;
+	$: svg = svggen({ tilesize, bgcolor: $bgcolor, lines, imagesize });
+	$: relativeUrl = `${tilesize}/${$bgcolor}/${lines}/${imagesize}`;
 	$: url = `https://checkered.pages.dev/${relativeUrl}`;
-
-	function addLine() {
-		lineItems = [...lineItems, { direction: 'h', color: 'ccccccff', linewidth: 8, offset: 4 }];
-	}
-
-	function removeItem(i: number) {
-		lineItems.splice(i, 1);
-		lineItems = lineItems;
-	}
 </script>
 
 <section class="form">
 	{@html svg}
 	<form>
 		<label for="tw">タイル幅</label>
-		<input id="tw" type="text" bind:value={tw} />
+		<input id="tw" type="text" bind:value={$tw} />
 		<label for="tw">タイル高さ</label>
-		<input id="tw" type="text" bind:value={th} />
+		<input id="tw" type="text" bind:value={$th} />
 		<label for="tw">画像幅</label>
-		<input id="tw" type="text" bind:value={iw} />
+		<input id="tw" type="text" bind:value={$iw} />
 		<label for="tw">画像高さ</label>
-		<input id="tw" type="text" bind:value={ih} />
+		<input id="tw" type="text" bind:value={$ih} />
 
 		<label for="tw">背景色</label>
-		<input id="tw" type="text" bind:value={bgcolor} />
+		<input id="tw" type="text" bind:value={$bgcolor} />
 
 		<div class="lines">
 			<h3>線</h3>
-			{#each lineItems as lineItem, i}
-				<div class="lineitem">
-					<p>
-						線の向き：<select bind:value={lineItem.direction}>
-							{#each directionOption as diropt, i}
-								<option value={diropt.value} selected={i === 0}>{diropt.text}</option>
-							{/each}
-						</select>
-					</p>
-					<div>
-						色：
-						<div class="colorpreview" style="background-color: #{lineItem.color}"></div>
-						<input type="text" bind:value={lineItem.color} />
-					</div>
-					<p>太さ：<input type="number" bind:value={lineItem.linewidth} /></p>
-					<p>位置：<input type="number" bind:value={lineItem.offset} /></p>
-					<button type="button" on:click={() => removeItem(i)}>削除</button>
-				</div>
+			{#each $lineItems as _lineItem, i}
+				<!-- lineItemをLineItemViewに与えないのはなんか気持ち悪いな。 -->
+				<LineItemView idx={i}></LineItemView>
 			{/each}
-			<button type="button" on:click={addLine}>追加</button>
+			<button type="button" on:click={addItem}>追加</button>
 		</div>
 
 		<div class="result">
@@ -108,28 +86,6 @@
 	.lines {
 		grid-column-start: 1;
 		grid-column-end: 3;
-	}
-
-	.lineitem {
-		display: grid;
-		gap: 1rem;
-		grid-template-columns: 1fr 1fr 1fr 1fr 4rem;
-		align-items: end;
-
-		& input {
-			width: 100%;
-		}
-
-		& button {
-			padding: 0.25rem;
-			height: 2.5rem;
-			border-radius: 0.25rem;
-		}
-	}
-
-	.colorpreview {
-		width: 2rem;
-		height: 2rem;
 	}
 
 	.result {
