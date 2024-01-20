@@ -18,6 +18,11 @@ export type Command =
 	| { message: 'changePosition'; index: number; position: number };
 
 export interface StateContext {
+	tw: Writable<number>;
+	th: Writable<number>;
+	iw: Writable<number>;
+	ih: Writable<number>;
+	bgcolor: Writable<string>;
 	lineItems: Writable<LineItem[]>;
 	update: (command: Command) => void;
 }

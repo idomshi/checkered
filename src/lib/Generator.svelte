@@ -2,17 +2,10 @@
 	import { svggen } from '$lib/svggen';
 	import LineItemView from './LineItemView.svelte';
 
-	import { writable } from 'svelte/store';
 	import { getContext } from 'svelte';
 	import type { LineDirection, StateContext } from './types';
 
-	let tw = writable(128);
-	let th = writable(128);
-	let iw = writable(640);
-	let ih = writable(480);
-	let bgcolor = writable('ffffff');
-
-	const { lineItems, update } = getContext<StateContext>('StateContext');
+	const { tw, th, iw, ih, bgcolor, lineItems, update } = getContext<StateContext>('StateContext');
 
 	$: tilesize = `${$tw}x${$th}`;
 	$: lines = $lineItems

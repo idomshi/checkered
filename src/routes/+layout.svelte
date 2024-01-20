@@ -1,9 +1,14 @@
 <script lang="ts">
-	import { writable, type Writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import type { LineItem, Command, StateContext, LineDirection } from '$lib/types';
 
-	let lineItems: Writable<LineItem[]> = writable([]);
+	let tw = writable(128);
+	let th = writable(128);
+	let iw = writable(640);
+	let ih = writable(480);
+	let bgcolor = writable('ffffff');
+	let lineItems = writable<LineItem[]>([]);
 
 	function addLine() {
 		lineItems.update((v) => [...v, { direction: 'h', color: 'ccccccff', linewidth: 8, offset: 4 }]);
@@ -78,6 +83,11 @@
 	}
 
 	setContext<StateContext>('StateContext', {
+		tw,
+		th,
+		iw,
+		ih,
+		bgcolor,
 		lineItems,
 		update
 	});
