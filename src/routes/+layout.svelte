@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { writable, type Writable } from 'svelte/store';
 	import { setContext } from 'svelte';
-	import type { LineItem } from '$lib/types';
+	import type { LineItem, Command, StateContext, LineDirection } from '$lib/types';
 
 	let lineItems: Writable<LineItem[]> = writable([]);
 
@@ -16,7 +16,71 @@
 		});
 	}
 
-	setContext('lineItems', { value: lineItems, addItem: addLine, removeItem });
+	function changeDirection(idx: number, direction: LineDirection) {
+		lineItems.update((v) => {
+			const tmp = { ...v[idx], direction };
+			v[idx] = tmp;
+			return v;
+		});
+	}
+
+	function changeColor(idx: number, color: string) {
+		lineItems.update((v) => {
+			const tmp = { ...v[idx], color };
+			v[idx] = tmp;
+			return v;
+		});
+	}
+
+	function changeWidth(idx: number, width: number) {
+		lineItems.update((v) => {
+			const tmp = { ...v[idx], lineWidth: width };
+			v[idx] = tmp;
+			return v;
+		});
+	}
+
+	function changePosition(idx: number, position: number) {
+		lineItems.update((v) => {
+			const tmp = { ...v[idx], offset: position };
+			v[idx] = tmp;
+			return v;
+		});
+	}
+
+	function update(command: Command) {
+		const cmd = command;
+		switch (cmd.message) {
+			case 'addItem':
+				addLine();
+				break;
+
+			case 'removeItem':
+				removeItem(cmd.index);
+				break;
+
+			case 'changeDirection':
+				changeDirection(cmd.index, cmd.direction);
+				break;
+
+			case 'changeColor':
+				changeColor(cmd.index, cmd.color);
+				break;
+
+			case 'changeWidth':
+				changeWidth(cmd.index, cmd.width);
+				break;
+
+			case 'changePosition':
+				changePosition(cmd.index, cmd.position);
+				break;
+		}
+	}
+
+	setContext<StateContext>('StateContext', {
+		lineItems,
+		update
+	});
 </script>
 
 <slot />

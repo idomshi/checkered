@@ -2,9 +2,9 @@
 	import { svggen } from '$lib/svggen';
 	import LineItemView from './LineItemView.svelte';
 
-	import { writable, type Writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
 	import { getContext } from 'svelte';
-	import type { LineItem } from './types';
+	import type { LineDirection, StateContext } from './types';
 
 	let tw = writable(128);
 	let th = writable(128);
@@ -12,15 +12,7 @@
 	let ih = writable(480);
 	let bgcolor = writable('ffffff');
 
-	const {
-		value: lineItems,
-		addItem,
-		removeItem
-	} = getContext<{
-		value: Writable<LineItem[]>;
-		addItem: () => void;
-		removeItem: (idx: number) => void;
-	}>('lineItems');
+	const { lineItems, update } = getContext<StateContext>('StateContext');
 
 	$: tilesize = `${$tw}x${$th}`;
 	$: lines = $lineItems
@@ -30,6 +22,26 @@
 	$: svg = svggen({ tilesize, bgcolor: $bgcolor, lines, imagesize });
 	$: relativeUrl = `${tilesize}/${$bgcolor}/${lines}/${imagesize}`;
 	$: url = `https://checkered.pages.dev/${relativeUrl}`;
+
+	function removeItem(i: number) {
+		update({ message: 'removeItem', index: i });
+	}
+
+	function changeDirection(i: number, ev: CustomEvent<LineDirection>) {
+		update({ message: 'changeDirection', index: i, direction: ev.detail });
+	}
+
+	function changeColor(i: number, ev: CustomEvent<string>) {
+		update({ message: 'changeColor', index: i, color: ev.detail });
+	}
+
+	function changeWidth(i: number, ev: CustomEvent<number>) {
+		update({ message: 'changeWidth', index: i, width: ev.detail });
+	}
+
+	function changePosition(i: number, ev: CustomEvent<number>) {
+		update({ message: 'changePosition', index: i, position: ev.detail });
+	}
 </script>
 
 <section class="form">
@@ -49,11 +61,17 @@
 
 		<div class="lines">
 			<h3>線</h3>
-			{#each $lineItems as _lineItem, i}
-				<!-- lineItemをLineItemViewに与えないのはなんか気持ち悪いな。 -->
-				<LineItemView idx={i}></LineItemView>
+			{#each $lineItems as lineItem, i (i)}
+				<LineItemView
+					{lineItem}
+					on:removeItem={() => removeItem(i)}
+					on:changeDirection={(dir) => changeDirection(i, dir)}
+					on:changeColor={(ev) => changeColor(i, ev)}
+					on:changeWidth={(ev) => changeWidth(i, ev)}
+					on:changePosition={(ev) => changePosition(i, ev)}
+				></LineItemView>
 			{/each}
-			<button type="button" on:click={addItem}>追加</button>
+			<button type="button" on:click={() => update({ message: 'addItem' })}>追加</button>
 		</div>
 
 		<div class="result">
