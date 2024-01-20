@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import type { LineDirection, LineItem } from './types';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import type { LineDirection, LineItem, StateContext } from './types';
+	import { XSolid } from 'svelte-awesome-icons';
 
 	export let lineItem: LineItem;
+	const { tw, th } = getContext<StateContext>('StateContext');
 
 	const dispatch = createEventDispatcher<{
 		addItem: null;
@@ -12,6 +14,8 @@
 		changeWidth: number;
 		changePosition: number;
 	}>();
+
+	$: rangeMax = lineItem.direction === 'h' ? $th : $tw;
 
 	const directionOption = [
 		{ value: 'h', text: 'ヨコ' },
@@ -52,43 +56,103 @@
 </script>
 
 <div class="lineitem">
+	<div class="line-color">
+		<div class="colorpreview" style="background-color: #{lineItem.color}"></div>
+		<!-- <input type="text" bind:value={lineItem.color} on:input={changeColor} /> -->
+	</div>
 	<p>
-		線の向き：<select bind:value={lineItem.direction} on:change={changeDirection}>
+		<label for="direction">線の向き：</label>
+		<br />
+		<select id="direction" bind:value={lineItem.direction} on:change={changeDirection}>
 			{#each directionOption as diropt}
 				<option value={diropt.value}>{diropt.text}</option>
 			{/each}
 		</select>
 	</p>
-	<div>
-		色：
-		<div class="colorpreview" style="background-color: #{lineItem.color}"></div>
-		<input type="text" bind:value={lineItem.color} on:input={changeColor} />
+	<div class="width-and-position">
+		<p>
+			<label for="width">太さ：</label>
+			<input
+				id="width"
+				type="range"
+				min="1"
+				max={rangeMax}
+				bind:value={lineItem.linewidth}
+				on:change={changeWidth}
+			/>
+		</p>
+		<p>
+			<label for="position">位置：</label>
+			<input
+				id="position"
+				type="range"
+				min="0"
+				max={rangeMax}
+				bind:value={lineItem.offset}
+				on:change={changePosition}
+			/>
+		</p>
 	</div>
-	<p>太さ：<input type="number" bind:value={lineItem.linewidth} on:change={changeWidth} /></p>
-	<p>位置：<input type="number" bind:value={lineItem.offset} on:change={changePosition} /></p>
-	<button type="button" on:click={remove}>削除</button>
+	<div class="remove-button">
+		<button type="button" on:click={remove}>
+			<XSolid size="16" color="#505050" />
+		</button>
+	</div>
 </div>
 
 <style>
 	.lineitem {
 		display: grid;
+		grid-template-columns: 6rem 5rem auto 3rem;
 		gap: 1rem;
-		grid-template-columns: 1fr 1fr 1fr 1fr 4rem;
-		align-items: end;
+		border: 1px solid #ccc;
+		padding: 0.25rem;
+
+		& label {
+			font-size: 0.75rem;
+		}
+
+		& p {
+			text-indent: -1rem;
+			padding-left: 1rem;
+			line-height: 0.75rem;
+		}
+
+		& .color-and-direction {
+			display: flex;
+			flex-direction: column;
+		}
+
+		& .width-and-position {
+			display: flex;
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+
+		& .remove-button {
+			display: flex;
+			flex-direction: column;
+			align-items: end;
+			justify-content: start;
+		}
 
 		& input {
 			width: 100%;
 		}
 
 		& button {
-			padding: 0.25rem;
-			height: 2.5rem;
-			border-radius: 0.25rem;
+			width: 1.5rem;
+			height: 1.5rem;
+			border: 1px solid #777;
+			border-radius: 0.15rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 	}
 
 	.colorpreview {
-		width: 2rem;
-		height: 2rem;
+		width: 6rem;
+		height: 6rem;
 	}
 </style>
