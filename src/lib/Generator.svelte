@@ -1,36 +1,40 @@
 <script lang="ts">
 	import { svggen } from '$lib/svggen';
+	import { SquarePlusRegular } from 'svelte-awesome-icons';
+	import LineItemView from './LineItemView.svelte';
 
-	interface LineItem {
-		direction: 'h' | 'v';
-		color: string;
-		linewidth: number;
-		offset: number;
-	}
+	import { getContext } from 'svelte';
+	import type { LineDirection, StateContext } from './types';
 
-	let tw = 128;
-	let th = 128;
-	let iw = 640;
-	let ih = 480;
-	let bgcolor = 'ffffff';
-	let lineItems: LineItem[] = [];
+	const { tw, th, iw, ih, bgcolor, lineItems, update } = getContext<StateContext>('StateContext');
 
-	$: tilesize = `${tw}x${th}`;
-	$: lines = lineItems
+	$: tilesize = `${$tw}x${$th}`;
+	$: lines = $lineItems
 		.map(({ direction, color, linewidth, offset }) => `${color}${direction}${linewidth}-${offset}`)
 		.join('_');
-	$: imagesize = `${iw}x${ih}.svg`;
-	$: svg = svggen({ tilesize, bgcolor, lines, imagesize });
-	$: relativeUrl = `${tilesize}/${bgcolor}/${lines}/${imagesize}`;
+	$: imagesize = `${$iw}x${$ih}.svg`;
+	$: svg = svggen({ tilesize, bgcolor: $bgcolor, lines, imagesize });
+	$: relativeUrl = `${tilesize}/${$bgcolor}/${lines}/${imagesize}`;
 	$: url = `https://checkered.pages.dev/${relativeUrl}`;
 
-	function addLine() {
-		lineItems = [...lineItems, { direction: 'h', color: 'ccccccff', linewidth: 8, offset: 4 }];
+	function removeItem(i: number) {
+		update({ message: 'removeItem', index: i });
 	}
 
-	function removeItem(i: number) {
-		lineItems.splice(i, 1);
-		lineItems = lineItems;
+	function changeDirection(i: number, ev: CustomEvent<LineDirection>) {
+		update({ message: 'changeDirection', index: i, direction: ev.detail });
+	}
+
+	function changeColor(i: number, ev: CustomEvent<string>) {
+		update({ message: 'changeColor', index: i, color: ev.detail });
+	}
+
+	function changeWidth(i: number, ev: CustomEvent<number>) {
+		update({ message: 'changeWidth', index: i, width: ev.detail });
+	}
+
+	function changePosition(i: number, ev: CustomEvent<number>) {
+		update({ message: 'changePosition', index: i, position: ev.detail });
 	}
 </script>
 
@@ -38,29 +42,34 @@
 	{@html svg}
 	<form>
 		<label for="tw">タイル幅</label>
-		<input id="tw" type="text" bind:value={tw} />
+		<input id="tw" type="text" bind:value={$tw} />
 		<label for="tw">タイル高さ</label>
-		<input id="tw" type="text" bind:value={th} />
+		<input id="tw" type="text" bind:value={$th} />
 		<label for="tw">画像幅</label>
-		<input id="tw" type="text" bind:value={iw} />
+		<input id="tw" type="text" bind:value={$iw} />
 		<label for="tw">画像高さ</label>
-		<input id="tw" type="text" bind:value={ih} />
+		<input id="tw" type="text" bind:value={$ih} />
 
 		<label for="tw">背景色</label>
-		<input id="tw" type="text" bind:value={bgcolor} />
+		<input id="tw" type="text" bind:value={$bgcolor} />
 
 		<div class="lines">
-			<h3>線</h3>
-			{#each lineItems as lineItem, i}
-				<div class="lineitem">
-					<p>線の向き：<input type="text" bind:value={lineItem.direction} /></p>
-					<p>色：<input type="text" bind:value={lineItem.color} /></p>
-					<p>太さ：<input type="text" bind:value={lineItem.linewidth} /></p>
-					<p>位置：<input type="text" bind:value={lineItem.offset} /></p>
-					<button type="button" on:click={() => removeItem(i)}>削除</button>
-				</div>
+			<div class="lines-header">
+				<h3>線</h3>
+				<button type="button" on:click={() => update({ message: 'addItem' })}>
+					<SquarePlusRegular size="16" color="#505050" />
+				</button>
+			</div>
+			{#each $lineItems as lineItem, i (i)}
+				<LineItemView
+					{lineItem}
+					on:removeItem={() => removeItem(i)}
+					on:changeDirection={(dir) => changeDirection(i, dir)}
+					on:changeColor={(ev) => changeColor(i, ev)}
+					on:changeWidth={(ev) => changeWidth(i, ev)}
+					on:changePosition={(ev) => changePosition(i, ev)}
+				></LineItemView>
 			{/each}
-			<button type="button" on:click={addLine}>追加</button>
 		</div>
 
 		<div class="result">
@@ -95,20 +104,21 @@
 		grid-column-end: 3;
 	}
 
-	.lineitem {
-		display: grid;
+	.lines-header {
+		display: flex;
+		flex-direction: row;
 		gap: 1rem;
-		grid-template-columns: 1fr 1fr 1fr 1fr 4rem;
-		align-items: end;
-
-		& input {
-			width: 100%;
-		}
+		align-items: baseline;
+		justify-content: start;
 
 		& button {
-			padding: 0.25rem;
-			height: 2.5rem;
-			border-radius: 0.25rem;
+			width: 1.5rem;
+			height: 1.5rem;
+			border: 1px solid #777;
+			border-radius: 0.15rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 	}
 
