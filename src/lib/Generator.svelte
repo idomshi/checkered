@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { svggen } from '$lib/svggen';
+	import { SquarePlusRegular } from 'svelte-awesome-icons';
 	import LineItemView from './LineItemView.svelte';
 
 	import { getContext } from 'svelte';
@@ -53,7 +54,12 @@
 		<input id="tw" type="text" bind:value={$bgcolor} />
 
 		<div class="lines">
-			<h3>線</h3>
+			<div class="lines-header">
+				<h3>線</h3>
+				<button type="button" on:click={() => update({ message: 'addItem' })}>
+					<SquarePlusRegular size="16" color="#505050" />
+				</button>
+			</div>
 			{#each $lineItems as lineItem, i (i)}
 				<LineItemView
 					{lineItem}
@@ -64,7 +70,6 @@
 					on:changePosition={(ev) => changePosition(i, ev)}
 				></LineItemView>
 			{/each}
-			<button type="button" on:click={() => update({ message: 'addItem' })}>追加</button>
 		</div>
 
 		<div class="result">
@@ -97,6 +102,24 @@
 	.lines {
 		grid-column-start: 1;
 		grid-column-end: 3;
+	}
+
+	.lines-header {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+		align-items: baseline;
+		justify-content: start;
+
+		& button {
+			width: 1.5rem;
+			height: 1.5rem;
+			border: 1px solid #777;
+			border-radius: 0.15rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 
 	.result {
