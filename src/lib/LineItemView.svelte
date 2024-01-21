@@ -58,20 +58,25 @@
 <div class="lineitem">
 	<div class="line-color">
 		<div class="colorpreview" style="background-color: #{lineItem.color}"></div>
-		<!-- <input type="text" bind:value={lineItem.color} on:input={changeColor} /> -->
 	</div>
-	<p>
-		<label for="direction">線の向き：</label>
-		<br />
-		<select id="direction" bind:value={lineItem.direction} on:change={changeDirection}>
-			{#each directionOption as diropt}
-				<option value={diropt.value}>{diropt.text}</option>
-			{/each}
-		</select>
-	</p>
+	<div>
+		<p>
+			<label for="direction">線の向き</label>
+			<br />
+			<select id="direction" bind:value={lineItem.direction} on:change={changeDirection}>
+				{#each directionOption as diropt}
+					<option value={diropt.value}>{diropt.text}</option>
+				{/each}
+			</select>
+		</p>
+		<p>
+			<label for="color">color</label>
+			<input id="color" type="text" bind:value={lineItem.color} on:input={changeColor} />
+		</p>
+	</div>
 	<div class="width-and-position">
 		<p>
-			<label for="width">太さ：</label>
+			<label for="width">太さ</label>
 			<input
 				id="width"
 				type="range"
@@ -82,7 +87,7 @@
 			/>
 		</p>
 		<p>
-			<label for="position">位置：</label>
+			<label for="position">位置</label>
 			<input
 				id="position"
 				type="range"
@@ -116,6 +121,10 @@
 			text-indent: -1rem;
 			padding-left: 1rem;
 			line-height: 0.75rem;
+		}
+
+		& input[type='text'] {
+			height: 1rem;
 		}
 
 		& .color-and-direction {
