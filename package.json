@@ -34,7 +34,7 @@
 		"typescript": "^5.0.0",
 		"vite": "^5.0.12",
 		"vitest": "^1.2.1",
-		"wrangler": "^3.23.0"
+		"wrangler": "^3.25.0"
 	},
 	"type": "module"
 }
