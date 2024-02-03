@@ -39,19 +39,23 @@
 </script>
 
 <section class="form">
-	{@html svg}
-	<form>
-		<label for="tw">タイル幅</label>
-		<input id="tw" type="text" bind:value={$tw} />
-		<label for="tw">タイル高さ</label>
-		<input id="tw" type="text" bind:value={$th} />
-		<label for="tw">画像幅</label>
-		<input id="tw" type="text" bind:value={$iw} />
-		<label for="tw">画像高さ</label>
-		<input id="tw" type="text" bind:value={$ih} />
+	<div class="header">
+		<div>
+			タイル：
+			<input id="tw" type="text" bind:value={$tw} />
+			×
+			<input id="tw" type="text" bind:value={$th} />
+		</div>
 
-		<label for="tw">背景色</label>
-		<input id="tw" type="text" bind:value={$bgcolor} />
+		<div>
+			<label for="tw">背景色：</label>
+			<input id="tw" type="text" bind:value={$bgcolor} />
+		</div>
+	</div>
+	<div class="workarea">
+		<div class="preview">
+			{@html svg}
+		</div>
 
 		<div class="lines">
 			<div class="lines-header">
@@ -71,12 +75,7 @@
 				></LineItemView>
 			{/each}
 		</div>
-
-		<div class="result">
-			<p>URL: <input type="text" bind:value={url} /></p>
-			<a href={relativeUrl}>開く</a>
-		</div>
-	</form>
+	</div>
 </section>
 
 <style>
@@ -85,23 +84,43 @@
 	}
 
 	section {
-		margin: 0 1rem;
-	}
-
-	form {
-		display: grid;
-		gap: 0.5rem 2rem;
-		grid-template-columns: 8rem 2fr;
+		margin: 0;
+		height: 100dvh;
 	}
 
 	.form {
-		border: #666 solid 1px;
-		padding: 0.5rem;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.header {
+		flex: none;
+		height: 2rem;
+		background-color: #ccc;
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
+	}
+
+	.workarea {
+		height: 100%;
+		display: flex;
+		flex-direction: row;
+	}
+
+	.preview {
+		height: 100%;
+		background-color: #eee;
+		flex: 1 1 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.lines {
-		grid-column-start: 1;
-		grid-column-end: 3;
+		height: 100%;
+		width: 32%;
+		flex-shrink: 0;
 	}
 
 	.lines-header {
@@ -120,10 +139,5 @@
 			justify-content: center;
 			align-items: center;
 		}
-	}
-
-	.result {
-		grid-column-start: 1;
-		grid-column-end: 3;
 	}
 </style>
