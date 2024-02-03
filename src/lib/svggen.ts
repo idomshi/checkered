@@ -16,7 +16,7 @@ export function svggen(params: {
 	const linecss = pattern
 		.map((v, i) => {
 			const classname = `.l${String(i).padStart(3, '0')}`;
-			const mc = v.match(/^([0-9a-f]{3,8})[hvlr]([0-9]+)-[0-9]+$/);
+			const mc = v.match(/^((?:[0-9a-f]{6}|[0-9a-f]{8}))[hvlr]([0-9]+)-[0-9]+$/);
 			if (mc === null) return '';
 
 			const [strokeColor, strokeWidth] = mc.slice(1);
@@ -29,7 +29,7 @@ export function svggen(params: {
 
 	pattern.forEach((p, i) => {
 		const classname = `l${String(i).padStart(3, '0')}`;
-		const mc = p.match(/^[0-9a-f]{3,8}([hvlr])([0-9]+)-([0-9]+)$/);
+		const mc = p.match(/^(?:[0-9a-f]{6}|[0-9a-f]{8})([hvlr])([0-9]+)-([0-9]+)$/);
 		if (mc === null) return;
 
 		const [type, strokeWidth, offset] = mc.slice(1);
