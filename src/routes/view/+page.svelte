@@ -30,7 +30,7 @@
 </div>
 
 <style>
-	.viewer {
+	.viewerpage {
 		width: 100%;
 		height: 100dvh;
 		display: flex;
