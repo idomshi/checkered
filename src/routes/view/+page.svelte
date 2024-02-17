@@ -18,14 +18,24 @@
 	async function download(width: number, height: number, format: ImageFormat) {
 		const url = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/${width}x${height}.svg`;
 
+		/** we need to wait for loading image data. */
+		async function loadImage(url: string) {
+			let img = new Image();
+			await new Promise<void>((resolve, reject) => {
+				img.onload = (v) => resolve();
+				img.onerror = (e) => reject(e);
+				img.src = url;
+			});
+			return img;
+		}
+
 		let imagedata: string;
 		switch (format) {
 			case 'svg':
 				imagedata = url;
 				break;
 			case 'png':
-				const img = document.createElement('img');
-				img.src = url;
+				const img = await loadImage(url);
 				const canvas = new OffscreenCanvas(width, height);
 				const ctx = canvas.getContext('2d');
 				ctx?.drawImage(img, 0, 0);
