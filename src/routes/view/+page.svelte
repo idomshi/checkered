@@ -1,8 +1,14 @@
 <script>
 	import { onMount } from 'svelte';
 
-	const src =
-		'/128x128/414954/ebeff2ech8-5_ebeff2ech2-13_ebeff2ech2-18_ebeff2ach16-54_ebeff2ach16-74_ebeff2ech2-111_ebeff2ech2-115_ebeff2ech8-123_ebeff2ecv8-5_ebeff2ecv2-13_ebeff2ecv2-18_ebeff2acv16-54_ebeff2acv16-74_ebeff2ecv2-111_ebeff2ecv2-115_ebeff2ecv8-123/160x160.svg';
+	const imageProps = {
+		tilesize: '128x128',
+		bgcolor: '414954',
+		lines: 'ebeff2ech8-5_ebeff2ech2-13_ebeff2ech2-18_ebeff2ach16-54_ebeff2ach16-74_ebeff2ech2-111_ebeff2ech2-115_ebeff2ech8-123_ebeff2ecv8-5_ebeff2ecv2-13_ebeff2ecv2-18_ebeff2acv16-54_ebeff2acv16-74_ebeff2ecv2-111_ebeff2ecv2-115_ebeff2ecv8-123',
+	}
+
+	const thumbsUrl = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/160x160.svg`
+	const bgUrl = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/${imageProps.tilesize}.svg`
 
 	let screenSize = { w: 0, h: 0 };
 
@@ -15,10 +21,10 @@
 	});
 </script>
 
-<div class="viewerpage" style={`background-image: url(${src});`}>
+<div class="viewerpage" style={`background-image: url(${bgUrl});`}>
 	<div class="container">
-		<div class="sumbnail">
-			<img {src} alt="checkered image sumbnail" />
+		<div class="thumbnail">
+			<img src={thumbsUrl} alt="checkered image thumbnail" />
 		</div>
 		<ul class="downloadlist">
 			<li>
@@ -60,7 +66,7 @@
 		box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
 	}
 
-	.sumbnail {
+	.thumbnail {
 		width: fit-content;
 		margin-left: auto;
 		margin-right: auto;
