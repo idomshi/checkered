@@ -1,24 +1,42 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 
 	const imageProps = {
 		tilesize: '128x128',
 		bgcolor: '414954',
-		lines: 'ebeff2ech8-5_ebeff2ech2-13_ebeff2ech2-18_ebeff2ach16-54_ebeff2ach16-74_ebeff2ech2-111_ebeff2ech2-115_ebeff2ech8-123_ebeff2ecv8-5_ebeff2ecv2-13_ebeff2ecv2-18_ebeff2acv16-54_ebeff2acv16-74_ebeff2ecv2-111_ebeff2ecv2-115_ebeff2ecv8-123',
-	}
+		lines:
+			'ebeff2ech8-5_ebeff2ech2-13_ebeff2ech2-18_ebeff2ach16-54_ebeff2ach16-74_ebeff2ech2-111_ebeff2ech2-115_ebeff2ech8-123_ebeff2ecv8-5_ebeff2ecv2-13_ebeff2ecv2-18_ebeff2acv16-54_ebeff2acv16-74_ebeff2ecv2-111_ebeff2ecv2-115_ebeff2ecv8-123'
+	};
 
-	const thumbsUrl = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/160x160.svg`
-	const bgUrl = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/${imageProps.tilesize}.svg`
+	const thumbsUrl = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/160x160.svg`;
+	const bgUrl = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/${imageProps.tilesize}.svg`;
 
 	let screenSize = { w: 0, h: 0 };
 
-	function download(width, height, format) {
+	type ImageFormat = 'svg' | 'png';
+
+	async function download(width: number, height: number, format: ImageFormat) {
 		const url = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/${width}x${height}.svg`;
 
-		let element = document.createElement('a');
-		// element.href = 'data:image/svg+xml,' + encodeURI(data);
-		element.href = url;
-		element.download = 'sample.svg';
+		let imagedata: string;
+		switch (format) {
+			case 'svg':
+				imagedata = url;
+				break;
+			case 'png':
+				const img = document.createElement('img');
+				img.src = url;
+				const canvas = new OffscreenCanvas(width, height);
+				const ctx = canvas.getContext('2d');
+				ctx?.drawImage(img, 0, 0);
+				const blob = await canvas.convertToBlob({ type: 'image/png' });
+				imagedata = URL.createObjectURL(blob);
+				break;
+		}
+
+		const element = document.createElement('a');
+		element.href = imagedata;
+		element.download = `sample.${format}`;
 		element.target = '_blank';
 		element.click();
 		element.remove();
@@ -44,21 +62,29 @@
 					class="button"
 					on:click={() => download(screenSize.w, screenSize.h, 'svg')}>SVG</button
 				>
-				<button type="button" class="button">PNG</button>
+				<button
+					type="button"
+					class="button"
+					on:click={() => download(screenSize.w, screenSize.h, 'png')}>PNG</button
+				>
 			</li>
 			<li>
 				<p>Full HD (1920x1080)</p>
 				<button type="button" class="button" on:click={() => download(1920, 1080, 'svg')}
 					>SVG</button
 				>
-				<button type="button" class="button">PNG</button>
+				<button type="button" class="button" on:click={() => download(1920, 1080, 'png')}
+					>PNG</button
+				>
 			</li>
 			<li>
 				<p>4K (3840x2160)</p>
 				<button type="button" class="button" on:click={() => download(3840, 2160, 'svg')}
 					>SVG</button
 				>
-				<button type="button" class="button">PNG</button>
+				<button type="button" class="button" on:click={() => download(3840, 2160, 'png')}
+					>PNG</button
+				>
 			</li>
 		</ul>
 	</div>
