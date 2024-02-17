@@ -12,7 +12,17 @@
 
 	let screenSize = { w: 0, h: 0 };
 
-	function download() {}
+	function download(width, height, format) {
+		const url = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/${width}x${height}.svg`;
+
+		let element = document.createElement('a');
+		// element.href = 'data:image/svg+xml,' + encodeURI(data);
+		element.href = url;
+		element.download = 'sample.svg';
+		element.target = '_blank';
+		element.click();
+		element.remove();
+	}
 
 	onMount(() => {
 		const w = window.screen.width;
@@ -29,17 +39,25 @@
 		<ul class="downloadlist">
 			<li>
 				<p>画面サイズ ({screenSize.w}x{screenSize.h})</p>
-				<button type="button" class="button">SVG</button>
+				<button
+					type="button"
+					class="button"
+					on:click={() => download(screenSize.w, screenSize.h, 'svg')}>SVG</button
+				>
 				<button type="button" class="button">PNG</button>
 			</li>
 			<li>
 				<p>Full HD (1920x1080)</p>
-				<button type="button" class="button">SVG</button>
+				<button type="button" class="button" on:click={() => download(1920, 1080, 'svg')}
+					>SVG</button
+				>
 				<button type="button" class="button">PNG</button>
 			</li>
 			<li>
 				<p>4K (3840x2160)</p>
-				<button type="button" class="button">SVG</button>
+				<button type="button" class="button" on:click={() => download(3840, 2160, 'svg')}
+					>SVG</button
+				>
 				<button type="button" class="button">PNG</button>
 			</li>
 		</ul>
