@@ -15,17 +15,28 @@
 	});
 </script>
 
-<div class="viewerpage">
-	<div>
-		<img {src} alt="checkered image" />
-		<p>download</p>
-		<ul>
-			<li><a>Full HD (1920x1080)</a></li>
-			<li><a>4K (3840x2160)</a></li>
-			<li><a>スマホ ()</a></li>
+<div class="viewerpage" style={`background-image: url(${src});`}>
+	<div class="container">
+		<div class="sumbnail">
+			<img {src} alt="checkered image sumbnail" />
+		</div>
+		<ul class="downloadlist">
+			<li>
+				<p>画面サイズ ({screenSize.w}x{screenSize.h})</p>
+				<button type="button" class="button">SVG</button>
+				<button type="button" class="button">PNG</button>
+			</li>
+			<li>
+				<p>Full HD (1920x1080)</p>
+				<button type="button" class="button">SVG</button>
+				<button type="button" class="button">PNG</button>
+			</li>
+			<li>
+				<p>4K (3840x2160)</p>
+				<button type="button" class="button">SVG</button>
+				<button type="button" class="button">PNG</button>
+			</li>
 		</ul>
-		<pre>{JSON.stringify(screenSize)}</pre>
-		<button type="button" on:click={download}>ダウンロード</button>
 	</div>
 </div>
 
@@ -36,5 +47,49 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background-color: rgba(255, 255, 255, 0.75);
+		background-blend-mode: lighten;
+	}
+
+	.container {
+		width: fit-content;
+		height: fit-content;
+		padding: 2rem;
+		border-radius: 0.5rem;
+		background-color: white;
+		box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+	}
+
+	.sumbnail {
+		width: fit-content;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.downloadlist {
+		display: grid;
+		grid-template-columns: auto auto auto;
+		margin-top: 1.5rem;
+		row-gap: 0.25rem;
+		column-gap: 0.25rem;
+
+		& > li {
+			display: grid;
+			grid-template-columns: subgrid;
+			grid-column: span 3;
+			align-items: center;
+		}
+	}
+
+	.button {
+		padding: 0.25rem 1rem;
+		border: 1px solid rgba(125, 125, 125, 0.452);
+		border-radius: 0.25rem;
+		cursor: pointer;
+		background-color: rgb(224, 224, 224);
+
+		&:hover {
+			background-color: rgb(245, 245, 245);
+		}
 	}
 </style>
