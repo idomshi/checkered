@@ -49,6 +49,10 @@
 		element.remove();
 	}
 
+	function back() {
+		history.back();
+	}
+
 	onMount(() => {
 		const w = window.screen.width;
 		const h = window.screen.height;
@@ -58,6 +62,9 @@
 
 <div class="viewerpage" style={`background-image: url(${bgUrl});`}>
 	<div class="container">
+		<div class="dialogheader">
+			<button type="button" class="button" on:click={back}>← Back</button>
+		</div>
 		<div class="thumbnail">
 			<img src={thumbsUrl} alt="checkered image thumbnail" />
 		</div>
@@ -112,6 +119,9 @@
 		width: fit-content;
 		height: fit-content;
 		padding: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
 		border-radius: 0.5rem;
 		background-color: white;
 		box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
@@ -126,7 +136,6 @@
 	.downloadlist {
 		display: grid;
 		grid-template-columns: auto auto auto;
-		margin-top: 1.5rem;
 		row-gap: 0.25rem;
 		column-gap: 0.25rem;
 

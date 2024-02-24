@@ -5,6 +5,7 @@
 
 	import { getContext } from 'svelte';
 	import type { LineDirection, StateContext } from './types';
+	import { goto } from '$app/navigation';
 
 	const { tw, th, iw, ih, bgcolor, lineItems, update } = getContext<StateContext>('StateContext');
 
@@ -36,6 +37,11 @@
 	function changePosition(i: number, ev: CustomEvent<number>) {
 		update({ message: 'changePosition', index: i, position: ev.detail });
 	}
+
+	function showViewer() {
+		const url = `/view?p=${relativeUrl}`;
+		goto(url);
+	}
 </script>
 
 <section class="form">
@@ -50,6 +56,10 @@
 		<div>
 			<label for="tw">背景色：</label>
 			<input id="tw" type="text" bind:value={$bgcolor} />
+		</div>
+
+		<div class="buttonarea">
+			<button type="button" class="linkbutton" on:click={showViewer}>View & DL →</button>
 		</div>
 	</div>
 	<div class="workarea">
@@ -100,6 +110,25 @@
 		display: flex;
 		flex-direction: row;
 		gap: 2rem;
+		align-items: center;
+	}
+
+	.buttonarea {
+		padding: 0 0.5rem;
+		flex: 1 1 auto;
+		text-align: end;
+	}
+
+	.linkbutton {
+		padding: 0.1rem 0.5rem;
+		border: 1px #ccc solid;
+		border-radius: 0.25rem;
+		background-color: #eee;
+		cursor: pointer;
+
+		&:hover {
+			background-color: #fff;
+		}
 	}
 
 	.workarea {
