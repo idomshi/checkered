@@ -4,7 +4,7 @@ import { match as matchColor } from '../../params/color';
 import { match as matchLines } from '../../params/lines';
 
 export const load: LayoutLoad = ({ url }) => {
-    // read and validate searchParams.
+	// read and validate searchParams.
 	const p = url.searchParams.get('p');
 	if (p === null) throw new Error('invalid params');
 
