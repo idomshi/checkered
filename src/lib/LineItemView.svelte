@@ -2,6 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { LineDirection, LineItem, StateContext } from './types';
 	import { XSolid } from 'svelte-awesome-icons';
+	import HorizontalSlider from './HorizontalSlider.svelte';
 
 	export let lineItem: LineItem;
 	const { tw, th } = getContext<StateContext>('StateContext');
@@ -38,18 +39,14 @@
 		dispatch('changeColor', target.value);
 	}
 
-	function changeWidth(ev: Event) {
-		const target = ev.target;
-		if (!(target instanceof HTMLInputElement)) return;
-		const width = parseInt(target.value);
+	function changeWidth(ev: CustomEvent) {
+		const width = ev.detail;
 		if (isNaN(width)) return;
 		dispatch('changeWidth', width);
 	}
 
-	function changePosition(ev: Event) {
-		const target = ev.target;
-		if (!(target instanceof HTMLInputElement)) return;
-		const position = parseInt(target.value);
+	function changePosition(ev: CustomEvent) {
+		const position = ev.detail;
 		if (isNaN(position)) return;
 		dispatch('changePosition', position);
 	}
@@ -60,7 +57,7 @@
 		<div class="colorpreview" style="background-color: #{lineItem.color}"></div>
 	</div>
 	<div>
-		<p>
+		<p class="propertyitem">
 			<label for="direction">線の向き</label>
 			<br />
 			<select id="direction" bind:value={lineItem.direction} on:change={changeDirection}>
@@ -69,29 +66,31 @@
 				{/each}
 			</select>
 		</p>
-		<p>
+		<p class="propertyitem">
 			<label for="color">color</label>
-			<input id="color" type="text" bind:value={lineItem.color} on:input={changeColor} />
+			<input
+				id="color"
+				class="colorinput"
+				type="text"
+				bind:value={lineItem.color}
+				on:input={changeColor}
+			/>
 		</p>
 	</div>
 	<div class="width-and-position">
-		<p>
+		<p class="propertyitem">
 			<label for="width">太さ</label>
-			<input
-				id="width"
-				type="range"
-				min="1"
+			<HorizontalSlider
+				min={1}
 				max={rangeMax}
 				bind:value={lineItem.linewidth}
 				on:change={changeWidth}
 			/>
 		</p>
-		<p>
+		<p class="propertyitem">
 			<label for="position">位置</label>
-			<input
-				id="position"
-				type="range"
-				min="0"
+			<HorizontalSlider
+				min={0}
 				max={rangeMax}
 				bind:value={lineItem.offset}
 				on:change={changePosition}
@@ -99,7 +98,7 @@
 		</p>
 	</div>
 	<div class="remove-button">
-		<button type="button" on:click={remove}>
+		<button class="closebutton" type="button" on:click={remove}>
 			<XSolid size="16" color="#505050" />
 		</button>
 	</div>
@@ -117,14 +116,10 @@
 			font-size: 0.75rem;
 		}
 
-		& p {
+		& .propertyitem {
 			text-indent: -1rem;
 			padding-left: 1rem;
 			line-height: 0.75rem;
-		}
-
-		& input[type='text'] {
-			height: 1rem;
 		}
 
 		& .color-and-direction {
@@ -145,11 +140,12 @@
 			justify-content: start;
 		}
 
-		& input {
+		& .colorinput {
 			width: 100%;
+			padding: 0 0.25rem;
 		}
 
-		& button {
+		& .closebutton {
 			width: 1.5rem;
 			height: 1.5rem;
 			border: 1px solid #777;

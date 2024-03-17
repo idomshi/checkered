@@ -101,5 +101,6 @@
 		padding: 0;
 		color: #333;
 		line-height: 1.7rem;
+		box-sizing: border-box;
 	}
 </style>
