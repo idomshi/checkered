@@ -66,7 +66,7 @@
 			<button type="button" class="button" on:click={back}>← Back</button>
 		</div>
 		<div class="thumbnail">
-			<img src={thumbsUrl} alt="checkered image thumbnail" />
+			<img src={thumbsUrl} alt="" />
 		</div>
 		<ul class="downloadlist">
 			<li>
