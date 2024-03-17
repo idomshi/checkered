@@ -29,7 +29,7 @@
 
 <div class="container">
 	<input type="range" bind:value {min} {max} />
-	<input type="text" bind:value on:change={valInput} class="numberinput" />
+	<input type="text" class="numberinput" bind:value on:change={valInput} />
 	<button type="button" class="button" on:click={dec}>-</button>
 	<button type="button" class="button" on:click={inc}>+</button>
 </div>
@@ -38,13 +38,14 @@
 	.container {
 		display: flex;
 		flex-direction: row;
+		gap: 0.25rem;
 	}
 
 	.numberinput {
-		box-sizing: border-box;
 		width: 3rem;
 		padding: 0 0.25rem;
 		text-align: right;
+		flex: 0 0 auto;
 	}
 
 	.button {
