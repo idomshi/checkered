@@ -42,7 +42,7 @@ export function svggen(params: {
 
 				if (oy + lw / 2 > th) {
 					resultArr.push(
-						`<line x1="0" x2="${iw}" y1="${th - oy}" y2="${th - oy}" class="${classname}" />`
+						`<line x1="0" x2="${iw}" y1="${oy - th}" y2="${oy - th}" class="${classname}" />`
 					);
 				}
 				for (let y = oy; y < ih + lw / 2; y += th) {
@@ -58,7 +58,7 @@ export function svggen(params: {
 
 				if (ox + lw / 2 > tw) {
 					resultArr.push(
-						`<line x1="${tw - ox}" x2="${tw - ox}" y1="0" y2="${ih}" class="${classname}" />`
+						`<line x1="${ox - tw}" x2="${ox - tw}" y1="0" y2="${ih}" class="${classname}" />`
 					);
 				}
 				for (let x = ox; x < iw + lw / 2; x += tw) {
