@@ -74,16 +74,18 @@
 					<SquarePlusRegular size="16" color="#505050" />
 				</button>
 			</div>
-			{#each $lineItems as lineItem, i (i)}
-				<LineItemView
-					{lineItem}
-					on:removeItem={() => removeItem(i)}
-					on:changeDirection={(dir) => changeDirection(i, dir)}
-					on:changeColor={(ev) => changeColor(i, ev)}
-					on:changeWidth={(ev) => changeWidth(i, ev)}
-					on:changePosition={(ev) => changePosition(i, ev)}
-				></LineItemView>
-			{/each}
+			<div class="lineproperties">
+				{#each $lineItems as lineItem, i (i)}
+					<LineItemView
+						{lineItem}
+						on:removeItem={() => removeItem(i)}
+						on:changeDirection={(dir) => changeDirection(i, dir)}
+						on:changeColor={(ev) => changeColor(i, ev)}
+						on:changeWidth={(ev) => changeWidth(i, ev)}
+						on:changePosition={(ev) => changePosition(i, ev)}
+					></LineItemView>
+				{/each}
+			</div>
 		</div>
 	</div>
 </section>
@@ -93,19 +95,15 @@
 		margin-top: 1rem;
 	}
 
-	section {
-		margin: 0;
-		height: 100dvh;
-	}
-
 	.form {
+		height: 100dvh;
 		display: flex;
 		flex-direction: column;
 	}
 
 	.header {
 		flex: none;
-		height: 2rem;
+		height: 2.5rem;
 		background-color: #ccc;
 		display: flex;
 		flex-direction: row;
@@ -115,7 +113,7 @@
 
 	.buttonarea {
 		padding: 0 0.5rem;
-		flex: 1 1 auto;
+		flex: 1 1 0%;
 		text-align: end;
 	}
 
@@ -132,24 +130,25 @@
 	}
 
 	.workarea {
-		height: 100%;
+		height: calc(100% - 2.5rem);
+		flex: none;
 		display: flex;
 		flex-direction: row;
 	}
 
 	.preview {
-		height: 100%;
 		background-color: #eee;
-		flex: 1 1 auto;
+		flex: 1 1 0%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
 	.lines {
-		height: 100%;
-		width: 32%;
-		flex-shrink: 0;
+		width: 29rem;
+		flex: none;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.lines-header {
@@ -158,6 +157,9 @@
 		gap: 1rem;
 		align-items: baseline;
 		justify-content: start;
+		height: 3rem;
+		padding: 0 0.5rem;
+		flex: none;
 
 		& button {
 			width: 1.5rem;
@@ -168,5 +170,13 @@
 			justify-content: center;
 			align-items: center;
 		}
+	}
+
+	.lineproperties {
+		overflow-y: scroll;
+		flex: 1 1 0%;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
 	}
 </style>

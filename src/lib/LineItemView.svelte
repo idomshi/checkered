@@ -107,7 +107,7 @@
 <style>
 	.lineitem {
 		display: grid;
-		grid-template-columns: 6rem 5rem auto 3rem;
+		grid-template-columns: 1rem 5rem auto 2rem;
 		gap: 1rem;
 		border: 1px solid #ccc;
 		padding: 0.25rem;
@@ -128,6 +128,8 @@
 		}
 
 		& .width-and-position {
+			min-width: 16rem;
+			flex: 1 1 100%;
 			display: flex;
 			flex-direction: column;
 			gap: 0.25rem;
@@ -157,7 +159,7 @@
 	}
 
 	.colorpreview {
-		width: 6rem;
-		height: 6rem;
+		width: 0.5rem;
+		height: 100%;
 	}
 </style>
