@@ -11,7 +11,14 @@
 	let lineItems = writable<LineItem[]>([]);
 
 	function addLine() {
-		lineItems.update((v) => [...v, { direction: 'h', color: 'ccccccff', linewidth: 8, offset: 4 }]);
+		if ($lineItems.length === 0) {
+			lineItems.update((v) => [
+				...v,
+				{ direction: 'h', color: 'ccccccff', linewidth: 8, offset: 4 }
+			]);
+		} else {
+			lineItems.update((v) => [...v, { ...v[v.length - 1] }]);
+		}
 	}
 
 	function removeItem(idx: number) {
