@@ -19,7 +19,7 @@
 		async function loadImage(url: string) {
 			let img = new Image();
 			await new Promise<void>((resolve, reject) => {
-				img.onload = (v) => resolve();
+				img.onload = () => resolve();
 				img.onerror = (e) => reject(e);
 				img.src = url;
 			});
@@ -31,7 +31,7 @@
 			case 'svg':
 				imagedata = url;
 				break;
-			case 'png':
+			case 'png': {
 				const img = await loadImage(url);
 				const canvas = new OffscreenCanvas(width, height);
 				const ctx = canvas.getContext('2d');
@@ -39,6 +39,7 @@
 				const blob = await canvas.convertToBlob({ type: 'image/png' });
 				imagedata = URL.createObjectURL(blob);
 				break;
+			}
 		}
 
 		const element = document.createElement('a');
