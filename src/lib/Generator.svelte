@@ -176,7 +176,8 @@
 		overflow-y: scroll;
 		flex: 1 1 0%;
 		display: flex;
-		flex-direction: column;
+		flex-direction: column-reverse;
+		justify-content: start;
 		gap: 0.25rem;
 	}
 </style>
