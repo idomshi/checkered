@@ -15,7 +15,7 @@
 		"pages:deploy": "npm run build && wrangler pages deploy .svelte-kit/cloudflare"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.2.2",
+		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/adapter-cloudflare": "^3.0.2",
 		"@sveltejs/kit": "^2.11.1",
 		"@sveltejs/vite-plugin-svelte": "^3.1.2",
