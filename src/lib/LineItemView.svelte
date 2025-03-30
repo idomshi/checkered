@@ -4,7 +4,11 @@
 	import { XSolid } from 'svelte-awesome-icons';
 	import HorizontalSlider from './HorizontalSlider.svelte';
 
-	export let lineItem: LineItem;
+	interface Props {
+		lineItem: LineItem;
+	}
+
+	let { lineItem = $bindable() }: Props = $props();
 	const { tw, th } = getContext<StateContext>('StateContext');
 
 	const dispatch = createEventDispatcher<{
@@ -16,7 +20,7 @@
 		changePosition: number;
 	}>();
 
-	$: rangeMax = lineItem.direction === 'h' ? $th : $tw;
+	let rangeMax = $derived(lineItem.direction === 'h' ? $th : $tw);
 
 	const directionOption = [
 		{ value: 'h', text: 'ヨコ' },
@@ -60,7 +64,7 @@
 		<p class="propertyitem">
 			<label for="direction">線の向き</label>
 			<br />
-			<select id="direction" bind:value={lineItem.direction} on:change={changeDirection}>
+			<select id="direction" bind:value={lineItem.direction} onchange={changeDirection}>
 				{#each directionOption as diropt}
 					<option value={diropt.value}>{diropt.text}</option>
 				{/each}
@@ -73,7 +77,7 @@
 				class="colorinput"
 				type="text"
 				bind:value={lineItem.color}
-				on:input={changeColor}
+				oninput={changeColor}
 			/>
 		</p>
 	</div>
@@ -98,7 +102,7 @@
 		</p>
 	</div>
 	<div class="remove-button">
-		<button class="closebutton" type="button" on:click={remove}>
+		<button class="closebutton" type="button" onclick={remove}>
 			<XSolid size="16" color="#505050" />
 		</button>
 	</div>

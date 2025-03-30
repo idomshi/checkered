@@ -9,14 +9,14 @@
 
 	const { tw, th, iw, ih, bgcolor, lineItems, update } = getContext<StateContext>('StateContext');
 
-	$: tilesize = `${$tw}x${$th}`;
-	$: lines = $lineItems
+	let tilesize = $derived(`${$tw}x${$th}`);
+	let lines = $derived($lineItems
 		.map(({ direction, color, linewidth, offset }) => `${color}${direction}${linewidth}-${offset}`)
-		.join('_');
-	$: imagesize = `${$iw}x${$ih}.svg`;
-	$: svg = svggen({ tilesize, bgcolor: $bgcolor, lines, imagesize });
-	$: relativeUrl = `${tilesize}/${$bgcolor}/${lines}/${imagesize}`;
-	$: url = `https://checkered.pages.dev/${relativeUrl}`;
+		.join('_'));
+	let imagesize = $derived(`${$iw}x${$ih}.svg`);
+	let svg = $derived(svggen({ tilesize, bgcolor: $bgcolor, lines, imagesize }));
+	let relativeUrl = $derived(`${tilesize}/${$bgcolor}/${lines}/${imagesize}`);
+	let url = $derived(`https://checkered.pages.dev/${relativeUrl}`);
 
 	function removeItem(i: number) {
 		update({ message: 'removeItem', index: i });
@@ -59,7 +59,7 @@
 		</div>
 
 		<div class="buttonarea">
-			<button type="button" class="linkbutton" on:click={showViewer}>View & DL →</button>
+			<button type="button" class="linkbutton" onclick={showViewer}>View & DL →</button>
 		</div>
 	</div>
 	<div class="workarea">
@@ -70,7 +70,7 @@
 		<div class="lines">
 			<div class="lines-header">
 				<h3>線</h3>
-				<button type="button" on:click={() => update({ message: 'addItem' })}>
+				<button type="button" onclick={() => update({ message: 'addItem' })}>
 					<SquarePlusRegular size="16" color="#505050" />
 				</button>
 			</div>

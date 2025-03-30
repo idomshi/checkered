@@ -2,13 +2,17 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 	const imageProps = data.p;
 
 	const thumbsUrl = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/160x160.svg`;
 	const bgUrl = `/${imageProps.tilesize}/${imageProps.bgcolor}/${imageProps.lines}/${imageProps.tilesize}.svg`;
 
-	let screenSize = { w: 0, h: 0 };
+	let screenSize = $state({ w: 0, h: 0 });
 
 	type ImageFormat = 'svg' | 'png';
 
@@ -64,7 +68,7 @@
 <div class="viewerpage" style={`background-image: url(${bgUrl});`}>
 	<div class="container">
 		<div class="dialogheader">
-			<button type="button" class="button" on:click={back}>← Back</button>
+			<button type="button" class="button" onclick={back}>← Back</button>
 		</div>
 		<div class="thumbnail">
 			<img src={thumbsUrl} alt="" />
@@ -75,29 +79,29 @@
 				<button
 					type="button"
 					class="button"
-					on:click={() => download(screenSize.w, screenSize.h, 'svg')}>SVG</button
+					onclick={() => download(screenSize.w, screenSize.h, 'svg')}>SVG</button
 				>
 				<button
 					type="button"
 					class="button"
-					on:click={() => download(screenSize.w, screenSize.h, 'png')}>PNG</button
+					onclick={() => download(screenSize.w, screenSize.h, 'png')}>PNG</button
 				>
 			</li>
 			<li>
 				<p>Full HD (1920x1080)</p>
-				<button type="button" class="button" on:click={() => download(1920, 1080, 'svg')}
+				<button type="button" class="button" onclick={() => download(1920, 1080, 'svg')}
 					>SVG</button
 				>
-				<button type="button" class="button" on:click={() => download(1920, 1080, 'png')}
+				<button type="button" class="button" onclick={() => download(1920, 1080, 'png')}
 					>PNG</button
 				>
 			</li>
 			<li>
 				<p>4K (3840x2160)</p>
-				<button type="button" class="button" on:click={() => download(3840, 2160, 'svg')}
+				<button type="button" class="button" onclick={() => download(3840, 2160, 'svg')}
 					>SVG</button
 				>
-				<button type="button" class="button" on:click={() => download(3840, 2160, 'png')}
+				<button type="button" class="button" onclick={() => download(3840, 2160, 'png')}
 					>PNG</button
 				>
 			</li>

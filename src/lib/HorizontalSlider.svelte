@@ -1,9 +1,15 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte';
 
-	export let min = 8;
-	export let max = 64;
-	export let value = min;
+	interface Props {
+		min?: number;
+		max?: number;
+		value?: any;
+	}
+
+	let { min = 8, max = 64, value = $bindable(min) }: Props = $props();
 
 	const dispatch = createEventDispatcher<{
 		change: number;
@@ -24,14 +30,16 @@
 		value = Math.min(max, Math.max(min, parseInt(target.value)));
 	}
 
-	$: dispatch('change', value);
+	run(() => {
+		dispatch('change', value);
+	});
 </script>
 
 <div class="container">
 	<input type="range" class="rangeinput" bind:value {min} {max} />
-	<input type="text" class="numberinput" bind:value on:change={valInput} />
-	<button type="button" class="button" on:click={dec}>-</button>
-	<button type="button" class="button" on:click={inc}>+</button>
+	<input type="text" class="numberinput" bind:value onchange={valInput} />
+	<button type="button" class="button" onclick={dec}>-</button>
+	<button type="button" class="button" onclick={inc}>+</button>
 </div>
 
 <style>
