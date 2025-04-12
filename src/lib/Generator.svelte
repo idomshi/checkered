@@ -9,33 +9,37 @@
 
 	const { tw, th, iw, ih, bgcolor, lineItems, update } = getContext<StateContext>('StateContext');
 
-	$: tilesize = `${$tw}x${$th}`;
-	$: lines = $lineItems
-		.map(({ direction, color, linewidth, offset }) => `${color}${direction}${linewidth}-${offset}`)
-		.join('_');
-	$: imagesize = `${$iw}x${$ih}.svg`;
-	$: svg = svggen({ tilesize, bgcolor: $bgcolor, lines, imagesize });
-	$: relativeUrl = `${tilesize}/${$bgcolor}/${lines}/${imagesize}`;
-	$: url = `https://checkered.pages.dev/${relativeUrl}`;
+	let tilesize = $derived(`${$tw}x${$th}`);
+	let lines = $derived(
+		$lineItems
+			.map(
+				({ direction, color, linewidth, offset }) => `${color}${direction}${linewidth}-${offset}`
+			)
+			.join('_')
+	);
+	let imagesize = $derived(`${$iw}x${$ih}.svg`);
+	let svg = $derived(svggen({ tilesize, bgcolor: $bgcolor, lines, imagesize }));
+	let relativeUrl = $derived(`${tilesize}/${$bgcolor}/${lines}/${imagesize}`);
+	let url = $derived(`https://checkered.pages.dev/${relativeUrl}`);
 
 	function removeItem(i: number) {
 		update({ message: 'removeItem', index: i });
 	}
 
-	function changeDirection(i: number, ev: CustomEvent<LineDirection>) {
-		update({ message: 'changeDirection', index: i, direction: ev.detail });
+	function changeDirection(i: number, ev: LineDirection) {
+		update({ message: 'changeDirection', index: i, direction: ev });
 	}
 
-	function changeColor(i: number, ev: CustomEvent<string>) {
-		update({ message: 'changeColor', index: i, color: ev.detail });
+	function changeColor(i: number, ev: string) {
+		update({ message: 'changeColor', index: i, color: ev });
 	}
 
-	function changeWidth(i: number, ev: CustomEvent<number>) {
-		update({ message: 'changeWidth', index: i, width: ev.detail });
+	function changeWidth(i: number, ev: number) {
+		update({ message: 'changeWidth', index: i, width: ev });
 	}
 
-	function changePosition(i: number, ev: CustomEvent<number>) {
-		update({ message: 'changePosition', index: i, position: ev.detail });
+	function changePosition(i: number, ev: number) {
+		update({ message: 'changePosition', index: i, position: ev });
 	}
 
 	function showViewer() {
@@ -59,7 +63,7 @@
 		</div>
 
 		<div class="buttonarea">
-			<button type="button" class="linkbutton" on:click={showViewer}>View & DL →</button>
+			<button type="button" class="linkbutton" onclick={showViewer}>View & DL →</button>
 		</div>
 	</div>
 	<div class="workarea">
@@ -70,7 +74,7 @@
 		<div class="lines">
 			<div class="lines-header">
 				<h3>線</h3>
-				<button type="button" on:click={() => update({ message: 'addItem' })}>
+				<button type="button" onclick={() => update({ message: 'addItem' })}>
 					<SquarePlusRegular size="16" color="#505050" />
 				</button>
 			</div>
@@ -78,11 +82,11 @@
 				{#each $lineItems as lineItem, i (i)}
 					<LineItemView
 						{lineItem}
-						on:removeItem={() => removeItem(i)}
-						on:changeDirection={(dir) => changeDirection(i, dir)}
-						on:changeColor={(ev) => changeColor(i, ev)}
-						on:changeWidth={(ev) => changeWidth(i, ev)}
-						on:changePosition={(ev) => changePosition(i, ev)}
+						removeItem={() => removeItem(i)}
+						changeDirection={(dir) => changeDirection(i, dir)}
+						changeColor={(ev) => changeColor(i, ev)}
+						changeWidth={(ev) => changeWidth(i, ev)}
+						changePosition={(ev) => changePosition(i, ev)}
 					></LineItemView>
 				{/each}
 			</div>

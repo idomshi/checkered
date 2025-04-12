@@ -2,6 +2,11 @@
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import type { LineItem, Command, StateContext, LineDirection } from '$lib/types';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	let tw = writable(128);
 	let th = writable(128);
@@ -100,14 +105,4 @@
 	});
 </script>
 
-<slot />
-
-<style>
-	:global(*) {
-		margin: 0;
-		padding: 0;
-		color: #333;
-		line-height: 1.7rem;
-		box-sizing: border-box;
-	}
-</style>
+{@render children?.()}
