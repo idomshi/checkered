@@ -106,13 +106,3 @@
 </script>
 
 {@render children?.()}
-
-<style>
-	:global(*) {
-		margin: 0;
-		padding: 0;
-		color: #333;
-		line-height: 1.7rem;
-		box-sizing: border-box;
-	}
-</style>
