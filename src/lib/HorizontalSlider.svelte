@@ -1,19 +1,12 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
-	import { createEventDispatcher } from 'svelte';
-
 	interface Props {
 		min?: number;
 		max?: number;
 		value?: any;
+		change: (value: number) => void;
 	}
 
-	let { min = 8, max = 64, value = $bindable(min) }: Props = $props();
-
-	const dispatch = createEventDispatcher<{
-		change: number;
-	}>();
+	let { min = 8, max = 64, value = $bindable(min), change }: Props = $props();
 
 	function inc() {
 		value = Math.min(value + 1, max);
@@ -30,8 +23,8 @@
 		value = Math.min(max, Math.max(min, parseInt(target.value)));
 	}
 
-	run(() => {
-		dispatch('change', value);
+	$effect(() => {
+		change(value);
 	});
 </script>
 

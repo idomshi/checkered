@@ -10,9 +10,13 @@
 	const { tw, th, iw, ih, bgcolor, lineItems, update } = getContext<StateContext>('StateContext');
 
 	let tilesize = $derived(`${$tw}x${$th}`);
-	let lines = $derived($lineItems
-		.map(({ direction, color, linewidth, offset }) => `${color}${direction}${linewidth}-${offset}`)
-		.join('_'));
+	let lines = $derived(
+		$lineItems
+			.map(
+				({ direction, color, linewidth, offset }) => `${color}${direction}${linewidth}-${offset}`
+			)
+			.join('_')
+	);
 	let imagesize = $derived(`${$iw}x${$ih}.svg`);
 	let svg = $derived(svggen({ tilesize, bgcolor: $bgcolor, lines, imagesize }));
 	let relativeUrl = $derived(`${tilesize}/${$bgcolor}/${lines}/${imagesize}`);
@@ -22,20 +26,20 @@
 		update({ message: 'removeItem', index: i });
 	}
 
-	function changeDirection(i: number, ev: CustomEvent<LineDirection>) {
-		update({ message: 'changeDirection', index: i, direction: ev.detail });
+	function changeDirection(i: number, ev: LineDirection) {
+		update({ message: 'changeDirection', index: i, direction: ev });
 	}
 
-	function changeColor(i: number, ev: CustomEvent<string>) {
-		update({ message: 'changeColor', index: i, color: ev.detail });
+	function changeColor(i: number, ev: string) {
+		update({ message: 'changeColor', index: i, color: ev });
 	}
 
-	function changeWidth(i: number, ev: CustomEvent<number>) {
-		update({ message: 'changeWidth', index: i, width: ev.detail });
+	function changeWidth(i: number, ev: number) {
+		update({ message: 'changeWidth', index: i, width: ev });
 	}
 
-	function changePosition(i: number, ev: CustomEvent<number>) {
-		update({ message: 'changePosition', index: i, position: ev.detail });
+	function changePosition(i: number, ev: number) {
+		update({ message: 'changePosition', index: i, position: ev });
 	}
 
 	function showViewer() {
@@ -78,11 +82,11 @@
 				{#each $lineItems as lineItem, i (i)}
 					<LineItemView
 						{lineItem}
-						on:removeItem={() => removeItem(i)}
-						on:changeDirection={(dir) => changeDirection(i, dir)}
-						on:changeColor={(ev) => changeColor(i, ev)}
-						on:changeWidth={(ev) => changeWidth(i, ev)}
-						on:changePosition={(ev) => changePosition(i, ev)}
+						removeItem={() => removeItem(i)}
+						changeDirection={(dir) => changeDirection(i, dir)}
+						changeColor={(ev) => changeColor(i, ev)}
+						changeWidth={(ev) => changeWidth(i, ev)}
+						changePosition={(ev) => changePosition(i, ev)}
 					></LineItemView>
 				{/each}
 			</div>

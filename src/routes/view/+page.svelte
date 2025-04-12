@@ -89,20 +89,16 @@
 			</li>
 			<li>
 				<p>Full HD (1920x1080)</p>
-				<button type="button" class="button" onclick={() => download(1920, 1080, 'svg')}
-					>SVG</button
+				<button type="button" class="button" onclick={() => download(1920, 1080, 'svg')}>SVG</button
 				>
-				<button type="button" class="button" onclick={() => download(1920, 1080, 'png')}
-					>PNG</button
+				<button type="button" class="button" onclick={() => download(1920, 1080, 'png')}>PNG</button
 				>
 			</li>
 			<li>
 				<p>4K (3840x2160)</p>
-				<button type="button" class="button" onclick={() => download(3840, 2160, 'svg')}
-					>SVG</button
+				<button type="button" class="button" onclick={() => download(3840, 2160, 'svg')}>SVG</button
 				>
-				<button type="button" class="button" onclick={() => download(3840, 2160, 'png')}
-					>PNG</button
+				<button type="button" class="button" onclick={() => download(3840, 2160, 'png')}>PNG</button
 				>
 			</li>
 		</ul>
