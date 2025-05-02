@@ -3,6 +3,7 @@ import type { Writable } from 'svelte/store';
 export type LineDirection = 'h' | 'v';
 
 export interface LineItem {
+	id: string;
 	direction: LineDirection;
 	color: string;
 	linewidth: number;
