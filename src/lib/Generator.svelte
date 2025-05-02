@@ -79,7 +79,7 @@
 				</button>
 			</div>
 			<div class="lineproperties">
-				{#each $lineItems as lineItem, i (i)}
+				{#each $lineItems as lineItem, i (lineItem.id)}
 					<LineItemView
 						{lineItem}
 						removeItem={() => removeItem(i)}

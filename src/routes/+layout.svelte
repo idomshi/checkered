@@ -15,14 +15,25 @@
 	let bgcolor = writable('ffffff');
 	let lineItems = writable<LineItem[]>([]);
 
+	function* generateId() {
+		let i = 0;
+		while (true) {
+			console.log(i);
+			yield String(i++);
+		}
+		return ""
+	}
+	const genId = generateId();
+
 	function addLine() {
+		const id = genId.next().value;
 		if ($lineItems.length === 0) {
 			lineItems.update((v) => [
 				...v,
-				{ direction: 'h', color: 'ccccccff', linewidth: 8, offset: 4 }
+				{ id, direction: 'h', color: 'ccccccff', linewidth: 8, offset: 4 }
 			]);
 		} else {
-			lineItems.update((v) => [...v, { ...v[v.length - 1] }]);
+			lineItems.update((v) => [...v, { ...v[v.length - 1], id }]);
 		}
 	}
 
@@ -51,7 +62,7 @@
 
 	function changeWidth(idx: number, width: number) {
 		lineItems.update((v) => {
-			const tmp = { ...v[idx], lineWidth: width };
+			const tmp = { ...v[idx], linewidth: width };
 			v[idx] = tmp;
 			return v;
 		});
