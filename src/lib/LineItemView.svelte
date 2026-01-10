@@ -3,7 +3,6 @@
 	import type { LineDirection, LineItem, StateContext } from './types';
 	import { XSolid } from 'svelte-awesome-icons';
 	import HorizontalSlider from './HorizontalSlider.svelte';
-	import { writable } from 'svelte/store';
 
 	interface Props {
 		lineItem: LineItem;
@@ -22,10 +21,9 @@
 		changeWidth,
 		changePosition
 	}: Props = $props();
-	const lineItem = writable(initialLineItem);
 	const { tw, th } = getContext<StateContext>('StateContext');
 
-	let rangeMax = $derived($lineItem.direction === 'h' ? $th : $tw);
+	let rangeMax = $derived(initialLineItem.direction === 'h' ? $th : $tw);
 
 	const directionOption = [
 		{ value: 'h', text: 'ヨコ' },
@@ -63,13 +61,13 @@
 
 <div class="lineitem">
 	<div class="line-color">
-		<div class="colorpreview" style="background-color: #{$lineItem.color}"></div>
+		<div class="colorpreview" style="background-color: #{initialLineItem.color}"></div>
 	</div>
 	<div>
 		<p class="propertyitem">
 			<label for="direction">線の向き</label>
 			<br />
-			<select id="direction" bind:value={$lineItem.direction} onchange={onChangeDirection}>
+			<select id="direction" value={initialLineItem.direction} onchange={onChangeDirection}>
 				{#each directionOption as diropt}
 					<option value={diropt.value}>{diropt.text}</option>
 				{/each}
@@ -81,7 +79,7 @@
 				id="color"
 				class="colorinput"
 				type="text"
-				bind:value={$lineItem.color}
+				value={initialLineItem.color}
 				oninput={onChangeColor}
 			/>
 		</p>
@@ -92,7 +90,7 @@
 			<HorizontalSlider
 				min={1}
 				max={rangeMax}
-				bind:value={$lineItem.linewidth}
+				value={initialLineItem.linewidth}
 				change={onChangeWidth}
 			/>
 		</p>
@@ -101,7 +99,7 @@
 			<HorizontalSlider
 				min={0}
 				max={rangeMax}
-				bind:value={$lineItem.offset}
+				value={initialLineItem.offset}
 				change={onChangePosition}
 			/>
 		</p>
