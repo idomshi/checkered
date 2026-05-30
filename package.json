@@ -36,5 +36,8 @@
 		"vitest": "^4.1.7",
 		"wrangler": "^4.95.0"
 	},
+	"overrides": {
+		"cookie": "^1.0.2"
+	},
 	"type": "module"
 }
