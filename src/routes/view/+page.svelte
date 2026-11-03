@@ -9,7 +9,9 @@
 	let { data }: Props = $props();
 
 	const thumbsUrl = $derived(`/${data.p.tilesize}/${data.p.bgcolor}/${data.p.lines}/160x160.svg`);
-	const bgUrl = $derived(`/${data.p.tilesize}/${data.p.bgcolor}/${data.p.lines}/${data.p.tilesize}.svg`);
+	const bgUrl = $derived(
+		`/${data.p.tilesize}/${data.p.bgcolor}/${data.p.lines}/${data.p.tilesize}.svg`
+	);
 
 	let screenSize = $state({ w: 0, h: 0 });
 

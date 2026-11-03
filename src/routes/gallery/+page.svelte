@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Gallery from '$lib/Gallery.svelte';
+	import Gallery from '#lib/Gallery.svelte';
 </script>
 
 <Gallery />

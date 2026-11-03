@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Spec from '$lib/Spec.svelte';
+	import Spec from '#lib/Spec.svelte';
 </script>
 
 <Spec />
