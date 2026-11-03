@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { svggen } from '$lib/svggen';
+	import { svggen } from '#lib/svggen.js';
 	import { SquarePlusRegular } from 'svelte-awesome-icons';
 	import LineItemView from './LineItemView.svelte';
 

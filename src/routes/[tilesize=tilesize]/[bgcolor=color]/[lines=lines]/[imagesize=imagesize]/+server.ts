@@ -1,4 +1,4 @@
-import { svggen } from '$lib/svggen';
+import { svggen } from '#lib/svggen.js';
 
 export function GET(params) {
 	const svgstr = svggen({

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
-	import type { LineItem, Command, StateContext, LineDirection } from '$lib/types';
+	import type { LineItem, Command, StateContext, LineDirection } from '#lib/types.js';
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -21,7 +21,7 @@
 			console.log(i);
 			yield String(i++);
 		}
-		return ""
+		return '';
 	}
 	const genId = generateId();
 
