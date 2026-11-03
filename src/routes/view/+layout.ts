@@ -1,9 +1,9 @@
 import type { LayoutLoad } from './$types';
-import { params } from "../../params";
-import type { StandardSchemaV1 } from "@standard-schema/spec";
+import { params } from '../../params';
+import type { StandardSchemaV1 } from '@standard-schema/spec';
 
 function parse<T>(schema: StandardSchemaV1<string, T>, value: string | undefined) {
-	const result = schema['~standard'].validate(value ?? "");
+	const result = schema['~standard'].validate(value ?? '');
 	if (result instanceof Promise || result.issues) throw new Error('invalid params');
 	return result.value;
 }
